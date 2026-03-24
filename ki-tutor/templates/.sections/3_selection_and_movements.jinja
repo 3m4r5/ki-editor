@@ -1,0 +1,51 @@
+You are currently in the line selection mode\
+(indicated by 'LINE' in the status bar).\
+Click {{ _.j }} (<<) to select previous line and {{ _.l }} (>>) for the next line.\
+Click {{ _.s }} to switch to word selection mode.\
+Click {{ _.j }} (<<) to select previous word and {{ _.l }} (>>) for the next word.\
+Notice how the same keys ({{ _.j }} {{ _.l }}) do different actions depending on the selection mode,\
+these are called movements,\
+every selection mode uses the same movements (positional coherence).\
+
+These are the primary selection modes:
+ {{ _.q }}: Char
+ {{ _.w }}: Subword
+ {{ _.s }}: Word
+ {{ _.S }}: Word* (Big Word)
+ {{ _.a }}: Line
+ {{ _.A }}: Line* (Full Line)
+ {{ _.d }}: Syntax Node
+ {{ _.D }}: Syntax Node*
+
+and these are the core movements:
+ ╭─────┬────────┬─────┬───────────┬─────╮
+ │  {{ _.y }}  │    {{ _.u }}   │  {{ _.i }}  │     {{ _.o }}     │  {{ _.p }}  │
+ │ |<  │    <   │  ^  │     >     │  >| │
+ ╰─────┼────────┼─────┼───────────┼─────╯
+       │    {{ _.j }}   │  {{ _.k }}  │     {{ _.l }}     │
+       │   <<   │  V  │     >>    │
+       ├────────┼─────┼───────────┤
+       │{{ _.M }}: index│     │     {{ _['.'] }}     │
+       │{{ _.m }}: jump │     │parent Line│
+       ╰────────╯     ╰───────────╯
+
+These movements are shared between selection modes,\
+and each one follows a pattern that will help you discover its function:
+╭───────────┬────────────────┬─────────────────────────╮
+│ Movements │      Name      │         Speed           │
+├───────────┼────────────────┼─────────────────────────┤
+│   <, >    │ Previous, Next │ Slowest, granular       │
+├───────────┼────────────────┼─────────────────────────┤
+│  <<, >>   │ Left, Right    │ Moderate, commonly used │
+├───────────┼────────────────┼─────────────────────────┤
+│   ^, v    │ Up, Down       │ Fastest                 │
+├───────────┼────────────────┼─────────────────────────┤
+│  |<, >|   │ First, Last    │ -                       │
+╰───────────┴────────────────┴─────────────────────────╯
+
+more about selection modes:
+https://ki-editor.org/docs/category/selection-modes-1
+
+and more about movements:
+https://ki-editor.org/docs/normal-mode/core-movements
+https://ki-editor.org/docs/normal-mode/other-movements
