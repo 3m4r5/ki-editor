@@ -27,11 +27,11 @@ click l to go to the next line.
 Ki is a modal editor meaning it has multiple modes. The editor starts in
 normal mode by default (indicated by 'NORM' in the status bar) where you
 can change selection and execute actions. To insert Text you will need to
-go to insert mode (indicated by 'INST' in the status bar) by clicking h (←
-Insert) or ; (Insert →). h (← Insert) will put the cursor at the beginning
-of the selection and ; (Insert →) will put it at the end of the selection.
-Now you can type normally, click the escape key (Esc) to go back to normal
-mode and click Enter to save."
+switch to insert mode (indicated by 'INST' in the status bar) by clicking
+h (← Insert) or ; (Insert →). h (← Insert) will put the cursor at the
+beginning of the selection and ; (Insert →) will put it at the end of the
+selection. Now you can type normally, click the escape key (Esc) to switch
+back to normal mode and click Enter to save."
 
 const SPACE_MENU: &'static str = "
                               ╭────────────╮
@@ -59,8 +59,8 @@ status bar). Click j (<<) to select previous line and l (>>) for the next
 line. Click s to switch to word selection mode. Click j (<<) to select
 previous word and l (>>) for the next word. Notice how the same keys (j l)
 do different actions depending on the selection mode, these are called
-movements, every selection mode uses the same movements (positional
-coherence).
+movements, Selection modes share the same movements.
+
 These are the primary selection modes:
  q: Char
  w: Subword
@@ -83,26 +83,53 @@ and these are the core movements:
        │m: jump │     │parent Line│
        ╰────────╯     ╰───────────╯
 
+You can also click Backspace to go to the previous selection.
+
 These movements are shared between selection modes, and each one follows a
 pattern that will help you discover its function:
-╭───────────┬────────────────┬─────────────────────────╮
-│ Movements │      Name      │         Speed           │
-├───────────┼────────────────┼─────────────────────────┤
-│   <, >    │ Previous, Next │ Slowest, granular       │
-├───────────┼────────────────┼─────────────────────────┤
-│  <<, >>   │ Left, Right    │ Moderate, commonly used │
-├───────────┼────────────────┼─────────────────────────┤
-│   ^, v    │ Up, Down       │ Fastest                 │
-├───────────┼────────────────┼─────────────────────────┤
-│  |<, >|   │ First, Last    │ -                       │
-╰───────────┴────────────────┴─────────────────────────╯
+╭────────────────┬────────────────┬─────────────────────────╮
+│   Movements    │      Name      │         Speed           │
+├────────────────┼────────────────┼─────────────────────────┤
+│ u (<), o (>)   │ Previous, Next │ Slowest, granular       │
+├────────────────┼────────────────┼─────────────────────────┤
+│ j (<<), l (>>) │ Left, Right    │ Moderate, commonly used │
+├────────────────┼────────────────┼─────────────────────────┤
+│ i (^), k (v)   │ Up, Down       │ Fast                    │
+├────────────────┼────────────────┼─────────────────────────┤
+│ y (|<), p (>|) │ First, Last    │ Fastest                 │
+╰────────────────┴────────────────┴─────────────────────────╯
+
+Index (M) movement allows to go to a specific selection according to its
+order. You can for example switch to line selection mode (a), click M
+(shift + m), type a line number and then click Enter to go to the line
+with that number.
+
+Jump (m) movement allows to go to specific selection just by typing the
+letter that appears on the beginning of the desired selection, for
+example: switch to word selection mode (s) and then click m. The first
+letter of each word will be highlighted, Type the first letter of the word
+you want to select. If there are multiple words on screen that starts with
+that letter, Each one will have a different letter displayed instead of
+the first one, Click the character that is shown at the beginning of the
+word to select it.
+
+Parent line (.) movement always moves to the beginning of the last
+unindented/detented line before the current one. Here is an example:"
+
+fn main() { // parent line
+    println!("first child");
+    println!("second child"); // select this line and then click .
+}
+
+const REFERENCES: &'static str = "
 
 more about selection modes:
 https://ki-editor.org/docs/category/selection-modes-1
-
 and more about movements:
 https://ki-editor.org/docs/normal-mode/core-movements
-https://ki-editor.org/docs/normal-mode/other-movements"
+https://ki-editor.org/docs/normal-mode/other-movements
+
+here is a summary of primary selections modes:"
 
 const LINE: &'static str = "
                                  ╭──────╮
@@ -111,33 +138,47 @@ const LINE: &'static str = "
 The only difference between Line and Line* selection modes is that Line*
 (Full Line) includes whitespaces at the edges while Line doesn't.
 
-You might have noticed that in line selection mode l (>>) and j (<<) skip
-empty lines, You can use u (<) and o (>) if you don't want to skip empty
-lines, You can also use i (^) and k (v) to skip to empty lines. You can
-click Backspace to go to previous selection, y (|<) to go to the beginning
-and p (>|) to go to the end. To go to a specific line click M (shift+m),
-type the line number and click Enter. You can also use m (jump) and type
-the first character of the line you want to jump to, if there's only one
-line that begins with that character it will get selected, if there are
-multiple lines starting in that character, each line will show a different
-character at the beginning, click the character that is shown at the
-beginning of the line to select it."
+You can switch to line selection mode by clicking a in normal mode or
+click A to switch to line* selection mode.
+
+╭────────────────┬──────────────────────────────────────────────╮
+│   Movements    │                   Action                     │
+├────────────────┼──────────────────────────────────────────────┤
+│ u (<), o (>)   │ Previous or next line                        │
+├────────────────┼──────────────────────────────────────────────┤
+│ j (<<), l (>>) │ Previous or next line (non empty lines only) │
+├────────────────┼──────────────────────────────────────────────┤
+│ i (^), k (v)   │ Nearest empty line above or below            │
+├────────────────┼──────────────────────────────────────────────┤
+│ y (|<), p (>|) │ First or last line                           │
+╰────────────────┴──────────────────────────────────────────────╯"
 
 const WORD: &'static str = "
                                  ╭──────╮
                                  │ Word │
                                  ╰──────╯
-╭───────────┬──────────────────────────────────────────────╮
-│ Movements │                   Action                     │
-├───────────┼──────────────────────────────────────────────┤
-│   <, >    │ Previous or next word                        │
-├───────────┼──────────────────────────────────────────────┤
-│  <<, >>   │ Previous or next word (non-symbol word only) │
-├───────────┼──────────────────────────────────────────────┤
-│   ^, v    │ Nearest word in the next or previous line    │
-├───────────┼──────────────────────────────────────────────┤
-│  |<, >|   │ First or last word                           │
-╰───────────┴──────────────────────────────────────────────╯"
+A word is a sequence of alphanumeric characters including - and _
+separated by other symbols or whitespace.
+
+You can switch to word selection mode by clicking s in normal mode.
+
+╭────────────────┬─────────────────────────────────────────────────────╮
+│   Movements    │                       Action                        │
+├────────────────┼─────────────────────────────────────────────────────┤
+│ u (<), o (>)   │ Previous or next word or symbol                     │
+├────────────────┼─────────────────────────────────────────────────────┤
+│ j (<<), l (>>) │ Previous or next word                               │
+├────────────────┼─────────────────────────────────────────────────────┤
+│ i (^), k (v)   │ Nearest word or symbol in the previous or next line │
+├────────────────┼─────────────────────────────────────────────────────┤
+│ y (|<), p (>|) │ First or last word                                  │
+╰────────────────┴─────────────────────────────────────────────────────╯"
+
+const BIG_WORD: &'static str = "
+                               ╭──────────╮
+                               │ Big Word │
+                               ╰──────────╯
+"
 
 const SUBWORD: &'static str = "
                                 ╭─────────╮

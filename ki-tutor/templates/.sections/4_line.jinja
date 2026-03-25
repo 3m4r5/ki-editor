@@ -1,14 +1,15 @@
 The only difference between Line and Line* selection modes is that Line* (Full Line) includes whitespaces at the edges while Line doesn't.
 
-You might have noticed that in line selection mode {{ _.l }} (>>) and {{ _.j }} (<<) skip empty lines,\
-You can use {{ _.u }} (<) and {{ _.o }} (>) if you don't want to skip empty lines,\
-You can also use {{ _.i }} (^) and {{ _.k }} (v) to skip to empty lines.\
-You can click Backspace to go to previous selection,\
-{{ _.y }} (|<) to go to the beginning and {{ _.p }} (>|) to go to the end.\
-To go to a specific line click {{ _.M }} (shift+{{ _.m }}),\
-type the line number and click Enter.\
-You can also use {{ _.m }} (jump) and type the first character of the line you want to jump to,\
-if there's only one line that begins with that character it will get selected,\
-if there are multiple lines starting in that character,\
-each line will show a different character at the beginning,\
-click the character that is shown at the beginning of the line to select it.
+You can switch to line selection mode by clicking {{ _.a }} in normal mode or click {{ _.A }} to switch to line* selection mode.
+
+╭────────────────┬──────────────────────────────────────────────╮
+│   Movements    │                   Action                     │
+├────────────────┼──────────────────────────────────────────────┤
+│ {{ _.u }} (<), {{ _.o }} (>)   │ Previous or next line                        │
+├────────────────┼──────────────────────────────────────────────┤
+│ {{ _.j }} (<<), {{ _.l }} (>>) │ Previous or next line (non empty lines only) │
+├────────────────┼──────────────────────────────────────────────┤
+│ {{ _.i }} (^), {{ _.k }} (v)   │ Nearest empty line above or below            │
+├────────────────┼──────────────────────────────────────────────┤
+│ {{ _.y }} (|<), {{ _.p }} (>|) │ First or last line                           │
+╰────────────────┴──────────────────────────────────────────────╯

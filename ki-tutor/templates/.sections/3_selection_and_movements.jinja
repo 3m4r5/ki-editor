@@ -3,9 +3,10 @@ You are currently in the line selection mode\
 Click {{ _.j }} (<<) to select previous line and {{ _.l }} (>>) for the next line.\
 Click {{ _.s }} to switch to word selection mode.\
 Click {{ _.j }} (<<) to select previous word and {{ _.l }} (>>) for the next word.\
-Notice how the same keys ({{ _.j }} {{ _.l }}) do different actions depending on the selection mode,\
+Notice how the same keys ({{ _.j }} {{ _.l }})\
+do different actions depending on the selection mode,\
 these are called movements,\
-every selection mode uses the same movements (positional coherence).\
+Selection modes share the same movements.
 
 These are the primary selection modes:
  {{ _.q }}: Char
@@ -29,23 +30,50 @@ and these are the core movements:
        │{{ _.m }}: jump │     │parent Line│
        ╰────────╯     ╰───────────╯
 
+You can also click Backspace to go to the previous selection.
+
 These movements are shared between selection modes,\
 and each one follows a pattern that will help you discover its function:
-╭───────────┬────────────────┬─────────────────────────╮
-│ Movements │      Name      │         Speed           │
-├───────────┼────────────────┼─────────────────────────┤
-│   <, >    │ Previous, Next │ Slowest, granular       │
-├───────────┼────────────────┼─────────────────────────┤
-│  <<, >>   │ Left, Right    │ Moderate, commonly used │
-├───────────┼────────────────┼─────────────────────────┤
-│   ^, v    │ Up, Down       │ Fastest                 │
-├───────────┼────────────────┼─────────────────────────┤
-│  |<, >|   │ First, Last    │ -                       │
-╰───────────┴────────────────┴─────────────────────────╯
+╭────────────────┬────────────────┬─────────────────────────╮
+│   Movements    │      Name      │         Speed           │
+├────────────────┼────────────────┼─────────────────────────┤
+│ {{ _.u }} (<), {{ _.o }} (>)   │ Previous, Next │ Slowest, granular       │
+├────────────────┼────────────────┼─────────────────────────┤
+│ {{ _.j }} (<<), {{ _.l }} (>>) │ Left, Right    │ Moderate, commonly used │
+├────────────────┼────────────────┼─────────────────────────┤
+│ {{ _.i }} (^), {{ _.k }} (v)   │ Up, Down       │ Fast                    │
+├────────────────┼────────────────┼─────────────────────────┤
+│ {{ _.y }} (|<), {{ _.p }} (>|) │ First, Last    │ Fastest                 │
+╰────────────────┴────────────────┴─────────────────────────╯
+
+Index ({{ _.M }}) movement allows to go to a specific selection according to its order.\
+You can for example switch to line selection mode ({{ _.a }}),\
+click {{ _.M }} (shift + {{ _.m }}),\
+type a line number and then click Enter to go to the line with that number.
+
+Jump ({{ _.m }}) movement allows to go to specific selection just by typing the letter that appears on the beginning of the desired selection,\
+for example:\
+switch to word selection mode ({{ _.s }}) and then click {{ _.m }}.\
+The first letter of each word will be highlighted,\
+Type the first letter of the word you want to select.\
+If there are multiple words on screen that starts with that letter,\
+Each one will have a different letter displayed instead of the first one,\
+Click the character that is shown at the beginning of the word to select it.
+
+Parent line ({{ _['.'] }}) movement always moves to the beginning of the last unindented/detented line before the current one.\
+Here is an example:"
+
+fn main() { // parent line
+    println!("first child");
+    println!("second child"); // select this line and then click {{ _['.'] }}
+}
+
+const REFERENCES: &'static str = "
 
 more about selection modes:
 https://ki-editor.org/docs/category/selection-modes-1
-
 and more about movements:
 https://ki-editor.org/docs/normal-mode/core-movements
 https://ki-editor.org/docs/normal-mode/other-movements
+
+here is a summary of primary selections modes:

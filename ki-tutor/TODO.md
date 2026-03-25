@@ -9,6 +9,9 @@
 - [ ] selection modes and movements
   - [x] positional coherence
   - [x] Line and Line*
+  - [x] word
+  - [ ] word* (big word)
+  - [ ] subword
   - [ ] ...
 - [ ] basic actions
   - [ ] delete cut copy paste
