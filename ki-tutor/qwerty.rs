@@ -1,20 +1,16 @@
 /*
-            ##
-       #    ##   ##
-       ##   ##   ##
-       ##   ##   ##
-       ###  ##  ###        _  ___   _____    _ _ _
-         ########         | |/ (_) | ____|__| (_) |_ ___  _ __
-            ##            | ' /| | |  _| / _` | | __/ _ \| '__|
-          ######          | . \| | | |__| (_| | | || (_) | |
-        ### ## ###        |_|\_\_| |_____\__,_|_|\__\___/|_|
-       ##   ##   ##
-      ##    ##    ##      Multi-cursor combinatoric modal editor
-      ##    ##    ##
-      ##    ##    ##
-      #     ##    ##
-            ##
-            ##
+
+        ██   ██   ██
+        ██   ██   ██         _  ___   _____    _ _ _
+        ██   ██   ██        | |/ (_) | ____|__| (_) |_ ___  _ __
+        ▀██▄████▄██▀        | ' /| | |  _| / _` | | __/ _ \| '__|
+             ██             | . \| | | |__| (_| | | || (_) | |
+             ██             |_|\_\_| |_____\__,_|_|\__\___/|_|
+        ▄██▀████▀██▄
+        ██   ██   ██        Multi-cursor combinatoric modal editor
+        ██   ██   ██
+        ██   ██   ██
+
 */
 
 const INTRO: &'static str = "
@@ -62,7 +58,7 @@ do different actions depending on the selection mode, these are called
 movements, Selection modes share the same movements.
 
 These are the primary selection modes:
- q: Char
+ W: Char
  w: Subword
  s: Word
  S: Word* (Big Word)
@@ -82,8 +78,6 @@ and these are the core movements:
        │M: index│     │     .     │
        │m: jump │     │parent Line│
        ╰────────╯     ╰───────────╯
-
-You can also click Backspace to go to the previous selection.
 
 These movements are shared between selection modes, and each one follows a
 pattern that will help you discover its function:
@@ -178,19 +172,69 @@ const BIG_WORD: &'static str = "
                                ╭──────────╮
                                │ Big Word │
                                ╰──────────╯
-"
+A big word is either a sequence of non-whitespace characters or non-
+newline whitespace characters or a newline.
+
+You can switch to big word (word*) selection mode by clicking S (shift +
+s) in normal mode.
+
+an example of a big word is a
+url: https://ki-editor.org/docs/normal-mode/selection-modes/primary#word-1
+
+try to select the white space in the following table using the big word
+selection mode:
+╭────────────────┬───────────────────────────────────────────────╮
+│   Movements    │                       Action                  │
+├────────────────┼───────────────────────────────────────────────┤
+│ u (<), o (>)   │ Previous or next big word                     │
+├────────────────┼───────────────────────────────────────────────┤
+│ j (<<), l (>>) │ Previous or next non-whitespace big word      │
+├────────────────┼───────────────────────────────────────────────┤
+│ i (^), k (v)   │ Nearest big word in the previous or next line │
+├────────────────┼───────────────────────────────────────────────┤
+│ y (|<), p (>|) │ First or last non-whitespace big word         │
+╰────────────────┴───────────────────────────────────────────────╯"
 
 const SUBWORD: &'static str = "
                                 ╭─────────╮
                                 │ Subword │
                                 ╰─────────╯
-"
+A subword is a part of a word as in the following examples:
+camelCase PascalCase kebab-case snake_case SCREAMING_CASE
+
+You can switch to subword selection mode by clicking w in normal mode.
+
+╭────────────────┬──────────────────────────────────────────────╮
+│   Movements    │                       Action                 │
+├────────────────┼──────────────────────────────────────────────┤
+│ u (<), o (>)   │ Previous or next subword                     │
+├────────────────┼──────────────────────────────────────────────┤
+│ j (<<), l (>>) │ Previous or next non-symbol subword          │
+├────────────────┼──────────────────────────────────────────────┤
+│ i (^), k (v)   │ Nearest subword in the previous or next line │
+├────────────────┼──────────────────────────────────────────────┤
+│ y (|<), p (>|) | First or last subword in the current word    │
+╰────────────────┴──────────────────────────────────────────────╯"
 
 const CHAR: &'static str = "
                                  ╭──────╮
                                  │ Char │
                                  ╰──────╯
-"
+This mode is the most familiar and it's similar to how most editors work.
+
+You can switch to character selection mode by clicking W (shift + w).
+
+╭────────────────┬────────────────────────────────────────────────╮
+│   Movements    │                       Action                   │
+├────────────────┼────────────────────────────────────────────────┤
+│ u (<), o (>)   │ Previous or next character                     │
+├────────────────┼────────────────────────────────────────────────┤
+│ j (<<), l (>>) │ Previous or next character                     │
+├────────────────┼────────────────────────────────────────────────┤
+│ i (^), k (v)   │ Nearest character in the previous or next line │
+├────────────────┼────────────────────────────────────────────────┤
+│ y (|<), p (>|) | First or last character in the current subword │
+╰────────────────┴────────────────────────────────────────────────╯"
 
 const SYNTAX_NODE: &'static str = "
                               ╭─────────────╮
